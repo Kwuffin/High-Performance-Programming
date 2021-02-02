@@ -104,40 +104,42 @@ def merge_sort(xs: List[int]) -> None:
 
 def merge_arrays(array1: List[int], array2: List[int]) -> List[int]:
     """Recursively merge two arrays into one sorted array"""
-    if len(array1) == len(array2) == 0: # done when both arrays are empty
+    if len(array1) == len(array2) == 0:  # done when both arrays are empty
         return []
     else:
-        if len(array1) == 0: # if either array is empty
+        if len(array1) == 0:  # if either array is empty
             head, *tail = array2
-            return [head] + merge_arrays(array1, tail) # merge the remainder of the non-empty list
-        elif len(array2) == 0: # idem for the other array
+            return [head] + merge_arrays(array1, tail)  # merge the remainder of the non-empty list
+        elif len(array2) == 0:  # idem for the other array
             head, *tail = array1
             return [head] + merge_arrays(tail, array2)
-        else: # when both still have elements
+        else:  # when both still have elements
             head1, *tail1 = array1
             head2, *tail2 = array2
-            if head1 < head2: # select the smallest
-                return [head1] + merge_arrays(tail1, array2) # and merge with the remainder
+            if head1 < head2:  # select the smallest
+                return [head1] + merge_arrays(tail1, array2)  # and merge with the remainder
             else:
-                return [head2] + merge_arrays(array1, tail2) # idem for when array 2 had the smaller element
+                return [head2] + merge_arrays(array1, tail2)  # idem for when array 2 had the smaller element
 
 
 def recursive_merge_sort(data: List[int]) -> List[int]:
     """Recursive merge sort implementation for sorting arrays"""
-    if len(data) == 1: # arrays with 1 element are sorted
+    if len(data) == 1:  # arrays with 1 element are sorted
         return data
     else:
-        middle = int(len(data)/2) # find the middle (round down if len(data) is odd)
-        first, second = data[:middle], data[middle:] # split the list in half
-        return merge_arrays(recursive_merge_sort(first), recursive_merge_sort(second)) # merge_sort both arrays, and merge them into the result
+        middle = int(len(data) / 2)  # find the middle (round down if len(data) is odd)
+        first, second = data[:middle], data[middle:]  # split the list in half
+        return merge_arrays(recursive_merge_sort(first),
+                            recursive_merge_sort(second))  # merge_sort both arrays, and merge them into the result
 
 
 """====================================================================================================================================="""
 
-amount = [list(np.random.randint(100, size=1000)), list(np.random.randint(100, size=10000)), list(np.random.randint(100, size=30000))]
+# Random integers
+amount = [list(np.random.randint(100, size=1000)), list(np.random.randint(100, size=10000)),
+          list(np.random.randint(100, size=30000))]
 
 for iterations in amount:
-
     # Selection Sort
     selections_start = timer()
     selection_sort(iterations)
@@ -153,7 +155,60 @@ for iterations in amount:
     merge_sort(iterations)
     merge_time = timer() - merge_start
 
-    print(f"List length: {len(iterations)}\n"
+    print(f"Random integers (0-100), (1000, 10.000, 30.000)\n"
+          f"List length: {len(iterations)}\n"
+          f"Selection sort: {selections_time}s\n"
+          f"Insertion sort: {insertion_time}s\n"
+          f"Merge sort:     {merge_time}\n")
+
+# Sorted lists
+amount = [[i for i in range(30000)]]
+
+for iterations in amount:
+    # Selection Sort
+    selections_start = timer()
+    selection_sort(iterations)
+    selections_time = timer() - selections_start
+
+    # Insertion sort
+    insertion_start = timer()
+    insertion_sort(iterations)
+    insertion_time = timer() - insertion_start
+
+    # Merge sort
+    merge_start = timer()
+    merge_sort(iterations)
+    merge_time = timer() - merge_start
+
+    print(f"Sorted list (30k)\n"
+          f"List length: {len(iterations)}\n"
+          f"Selection sort: {selections_time}s\n"
+          f"Insertion sort: {insertion_time}s\n"
+          f"Merge sort:     {merge_time}\n")
+
+
+# Backwards sorted list
+amount = [[i for i in range(30000)]]
+amount.reverse()
+
+for iterations in amount:
+    # Selection Sort
+    selections_start = timer()
+    selection_sort(iterations)
+    selections_time = timer() - selections_start
+
+    # Insertion sort
+    insertion_start = timer()
+    insertion_sort(iterations)
+    insertion_time = timer() - insertion_start
+
+    # Merge sort
+    merge_start = timer()
+    merge_sort(iterations)
+    merge_time = timer() - merge_start
+
+    print(f"Reversed sorted list (30k)\n"
+          f"List length: {len(iterations)}\n"
           f"Selection sort: {selections_time}s\n"
           f"Insertion sort: {insertion_time}s\n"
           f"Merge sort:     {merge_time}\n")
