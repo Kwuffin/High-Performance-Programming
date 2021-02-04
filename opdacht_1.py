@@ -1,5 +1,5 @@
 import numpy as np
-
+from tqdm import tqdm
 
 def init_lists(length, max_value, min_value):
     """
@@ -109,7 +109,7 @@ def main():
         pos = True
 
         # Bucket sorting
-        for i in range(len(str(max_value))):
+        for i in tqdm(range(len(str(max_value)))):
             bucketed_list = distribution_pass(pos_list, bucket_list, i + 1)
             pos_list, bucket_list = gathering_pass(bucketed_list)
 
@@ -121,7 +121,7 @@ def main():
         neg_pos(neg_list)
 
         # Bucket sorting
-        for i in range(len(str(min_value)) - 1):
+        for i in tqdm(range(len(str(min_value)) - 1)):
             bucketed_list = distribution_pass(neg_list, bucket_list, i + 1)
             neg_list, bucket_list = gathering_pass(bucketed_list)
 
