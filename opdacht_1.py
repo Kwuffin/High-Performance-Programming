@@ -18,7 +18,7 @@ def init_lists(length, max_value):
     return rand_list, sort_list
 
 
-def bucketing(rand_list, sort_list, index, max_value):
+def distribution_pass(rand_list, sort_list, index, max_value):
     """
     Puts each value in 'rand_list' in the correct bucket in 'sort_list'
 
@@ -62,7 +62,7 @@ def main():
     rand_list, bucket_list = init_lists(n, max_value)
 
     for i in range(len(str(max_value))):
-        bucketed_list = bucketing(rand_list, bucket_list, i+1, max_value)
+        bucketed_list = distribution_pass(rand_list, bucket_list, i + 1, max_value)
         rand_list, bucket_list = gathering_pass(bucketed_list)
 
     print(rand_list)
