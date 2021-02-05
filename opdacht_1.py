@@ -1,5 +1,8 @@
 import numpy as np
 from tqdm import tqdm
+from time import time
+from matplotlib import pyplot as plt
+
 
 def init_lists(length, max_value, min_value):
     """
@@ -74,7 +77,7 @@ def gathering_pass(sort_list):
                  [], [],
                  [], [],
                  [], [],
-                 [], []]  # 10 lijsten voor het decimale stelsel. (2 voor een binair stelsel
+                 [], []]  # 10 lijsten voor het decimale stelsel. (2 voor een binair stelsel)
     return flat_sort_list, sort_list
 
 
@@ -89,11 +92,59 @@ def neg_pos(lst):
         lst[i] *= -1
 
 
-def main():
-    # User inputs for list length and number range.
-    n = int(input("Give list length:\n> "))
-    max_value = int(input("Give maximum value:\n> ")) + 1
-    min_value = int(input("Give minimum value:\n> "))
+def analyse(elapsed_time, sorted_list):
+    while True:
+        print(f"Sorted list with n = {len(sorted_list)}\n"
+              f"{sorted_list}")
+        print(f"Finished in {elapsed_time} seconds!")
+
+        number = False
+        while not number:
+            try:
+                user_opt = int(input("Finished sorting!\n\n"
+                                     f"1. Run again!\n"
+                                     f"2. Measure time with different n values\n"
+                                     f"3. Exit.\n"
+                                     f"> "))
+
+                if 1 <= user_opt <= 3:
+                    number = True
+                else:
+                    print("Ongeldige invoer.")
+
+            except TypeError:
+                print("Voer een getal in!")
+
+        if user_opt == 1:
+            looping()
+
+        elif user_opt == 2:
+            times = []
+            ns = []
+            for n in tqdm(range(50000, 1000000, 50000)):
+                elapsed_time, lst = main(n, -1000, 1000, False)
+                times.append(elapsed_time)
+                ns.append(n)
+
+            fig, ax = plt.subplots()
+            ax.plot(ns, times)
+
+            ax.set(xlabel='n', ylabel='Time (s)', title='Tests with different n values')
+            ax.grid()
+            plt.show()
+
+        elif user_opt == 3:
+            exit()
+
+
+def main(n=1000, min_value=0, max_value=100, userIn=True):
+    if userIn:
+        # User inputs for list length and number range.
+        n = int(input("Give list length:\n> "))
+        max_value = int(input("Give maximum value:\n> ")) + 1
+        min_value = int(input("Give minimum value:\n> "))
+
+    start = time()
 
     # Initializing lists with given parameters
     rand_list, bucket_list = init_lists(n, max_value, min_value)
@@ -101,43 +152,40 @@ def main():
     # Filter negative and positive numbers
     neg_list, pos_list = filter_negative(rand_list)
 
-    pos = False
-    neg = False
-
     # If list contains values
     if pos_list:
-        pos = True
 
         # Bucket sorting
-        for i in tqdm(range(len(str(max_value)))):
-            bucketed_list = distribution_pass(pos_list, bucket_list, i + 1)
+        for i in range(len(str(max_value))):
+            bucketed_list = distribution_pass(pos_list, bucket_list, i)
             pos_list, bucket_list = gathering_pass(bucketed_list)
 
     # If list contains values
     if neg_list:
-        neg = True
 
         # Make negative numbers positive
         neg_pos(neg_list)
 
         # Bucket sorting
-        for i in tqdm(range(len(str(min_value)) - 1)):
-            bucketed_list = distribution_pass(neg_list, bucket_list, i + 1)
+        for i in range(len(str(min_value)) - 1):
+            bucketed_list = distribution_pass(neg_list, bucket_list, i)
             neg_list, bucket_list = gathering_pass(bucketed_list)
 
         # Reverse list and make positive numbers negative again
         neg_list.reverse()
         neg_pos(neg_list)
 
-    if pos and neg:
-        print(neg_list + pos_list)
+    sorted_list = neg_list + pos_list
 
-    elif pos:
-        print(pos_list)
+    end = time() - start
 
-    elif neg:
-        print(neg_list)
+    return end, sorted_list
+
+
+def looping():
+    timestamp, lst = main()
+    analyse(timestamp, lst)
 
 
 if __name__ == '__main__':
-    main()
+    looping()
