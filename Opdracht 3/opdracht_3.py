@@ -44,7 +44,7 @@ def merge_sort(lst):
     for i in lst:
         split_elements.append([i])
 
-    with concurrent.futures.ProcessPoolExecutor() as executor:
+    with concurrent.futures.ThreadPoolExecutor() as executor:
         while len(split_elements) != 1:
 
             uneven = False
@@ -99,7 +99,7 @@ def analyze_times():
 
 if __name__ == '__main__':
 
-    LIST_LENGTH = 1000  # TODO: Enter your own value if you want
+    LIST_LENGTH = 1000000  # TODO: Enter your own value if you want
 
     main(LIST_LENGTH)
     # analyze_times()
