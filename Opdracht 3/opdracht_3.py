@@ -2,7 +2,6 @@ import concurrent.futures
 import numpy as np
 from time import time
 from matplotlib import pyplot as plt
-from math import floor
 
 
 def compare_lists(list_a, list_b):
@@ -45,13 +44,7 @@ def merge_sort(lst):
     for i in lst:
         split_elements.append([i])
 
-    if floor(len(split_elements)/2) > 61:
-        worker_count = 61  # Maximum max_worker value (on my PC), might differ from yours
-
-    else:
-        worker_count = None  # Default value for max_workers as stated in the documentation https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ProcessPoolExecutor
-
-    with concurrent.futures.ProcessPoolExecutor(max_workers=worker_count) as executor:
+    with concurrent.futures.ProcessPoolExecutor() as executor:
         while len(split_elements) != 1:
 
             uneven = False
