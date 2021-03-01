@@ -101,5 +101,5 @@ if __name__ == '__main__':
 
     LIST_LENGTH = 1000000  # TODO: Enter your own value if you want
 
-    # main(LIST_LENGTH)
-    analyze_times()
+    main(LIST_LENGTH)
+    # analyze_times()
