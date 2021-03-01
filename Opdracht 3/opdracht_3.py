@@ -1,5 +1,7 @@
 import concurrent.futures
 import numpy as np
+from time import time
+from matplotlib import pyplot as plt
 
 
 def compare_lists(list_a, list_b):
@@ -66,13 +68,35 @@ def merge_sort(lst):
         return split_elements[0]
 
 
-def main():
-    randlist = np.random.randint(100, size=100)
+def main(list_size=8):
+    randlist = np.random.randint(100, size=list_size)
     randlist = list(randlist)
     print(f"Random list: {randlist}")
     sorted_list = merge_sort(randlist)
     print(f"Sorted list: {sorted_list}")
 
 
+def analyze_times():
+    """
+    Executes a time-analysis with different list sizes. This function has to be called manually.
+
+    :return:
+    """
+    list_sizes = [10, 100, 1000, 10000, 25000, 50000, 100000]
+    times = []
+
+    for size in list_sizes:
+        start = time()
+        main(size)
+        end = time()
+        times.append(end - start)
+
+    plt.plot(list_sizes, times)
+    plt.ylabel("Tijd (s)")
+    plt.xlabel("Lijst lengte")
+    plt.show()
+
+
 if __name__ == '__main__':
     main()
+    # analyze_times()
