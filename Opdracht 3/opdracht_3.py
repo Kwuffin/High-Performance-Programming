@@ -82,7 +82,7 @@ def analyze_times():
 
     :return:
     """
-    list_sizes = [10, 100, 1000, 10000, 25000, 50000, 100000]
+    list_sizes = [10, 100, 1000, 10000, 25000, 50000, 100000, 500000, 1000000]
     times = []
 
     for size in list_sizes:
@@ -101,5 +101,5 @@ if __name__ == '__main__':
 
     LIST_LENGTH = 1000000  # TODO: Enter your own value if you want
 
-    main(LIST_LENGTH)
-    # analyze_times()
+    # main(LIST_LENGTH)
+    analyze_times()
